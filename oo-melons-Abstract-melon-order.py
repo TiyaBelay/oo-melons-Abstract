@@ -6,18 +6,20 @@ class AbstractMelonOrder(object):
     #AbstractMelonOrder is a Superclass.
     #DomesticMelonOrder and InternationalMelonOrder are the subclasses of AbstractMelonOrder.
 
-    #The initialization for the subclasses have been removed because both subclases have some attributes that are the same. However, those that are different such as order_type and tax have been left under the subclasses. 
+    #The initialization for the subclasses have been removed because both subclases have some attributes that are the same. 
 
-    #Therefore, an initalization has been done under the superclass with the following attributes : species, qty, shipped, country_code. 
-        #country_code is only relevant to the international subclass, therefore the country code constructor has been set to "None".
+    #An initalization has been done under the superclass with the following attributes : self, species, qty, order_type, tax, and country_code. 
+        #country_code is only relevant to the international subclass, therefore the country code parameter has been set to "None".
 
-    def __init__(self, species, qty, order_type=None, tax=None):
+        #Note: constructor is AKA as __init__ dunder method.
+
+    def __init__(self, species, qty, order_type=None, tax=None, country_code=None):
         """Initialize melon order attributes"""
         self.species = species
         self.qty = qty
         self.shipped = False
         self.tax = tax
-        # self.country_code = country_code
+       
 
     def get_total(self):
         """Calculate price."""
@@ -35,26 +37,17 @@ class AbstractMelonOrder(object):
 class DomesticMelonOrder(AbstractMelonOrder):
     """A domestic (in the US) melon order."""
 
+#refactoring the subclases by adding the super method. NOTE: The __init__ for the subclass does not need to match the arguments in the super class __init__; however, it does need to match in the subclass super method. 
 
-    def __init__(self, species, qty, order_type=None, tax=None):
+    def __init__(self, species, qty):
         super(DomesticMelonOrder, self).__init__(species, qty, 'domestic', 0.08)
-    # order_type = "domestic"
-    # tax = 0.08
 
 
-# class InternationalMelonOrder(AbstractMelonOrder):
-#     """An international (non-US) melon order."""
+class InternationalMelonOrder(AbstractMelonOrder):
+    """An international (non-US) melon order."""
 
-#     # country_code = country_code
-#     order_type = "international"
-#     tax = 0.17
-
-
-#     def get_country_code(self):
-#         """Return the country code."""
-
-# return self.country_code
-
+    def __init__(self, species, qty, country_code):
+        super(InternationalMelonOrder, self).__init__(species, qty, "international", 0.17, country_code)
 
 
 
