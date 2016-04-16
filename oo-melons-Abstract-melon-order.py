@@ -1,5 +1,16 @@
 """This file should have our order classes in it."""
 
+class ChristmastMelonsMixin(object):
+    """Calculates total for Christmas Melons."""
+
+    def christmas_melons_total(self):
+        base_price = 5 * 1.5
+        total = (1 + self.tax) * self.qty * base_price
+        print total
+
+        return total
+
+
 class AbstractMelonOrder(object):
     """Abstract class for global sales."""
 
@@ -25,7 +36,19 @@ class AbstractMelonOrder(object):
         """Calculate price."""
 
         base_price = 5
-        total = (1 + self.tax) * self.qty * base_price
+        
+        if self.species == "christmas melons":
+            base_price = 1.5 * 5
+            total = (1 + self.tax) * self.qty * base_price
+
+        elif self.species != "christmas melons":
+            base_price = 5
+            total = (1 + self.tax) * self.qty * base_price
+
+        elif self.qty < 10 and self.country_code != None:
+            base_price = 5
+            total = ((1 + self.tax) * self.qty * base_price) + 3.0
+
         return total
 
     def mark_shipped(self):
@@ -48,25 +71,3 @@ class InternationalMelonOrder(AbstractMelonOrder):
 
     def __init__(self, species, qty, country_code):
         super(InternationalMelonOrder, self).__init__(species, qty, "international", 0.17, country_code)
-
-
-
-"""def mult (num1, num2):
-    return num1 * num2
-
-product = mult(8, 7)
-my_num = num1
-
-
-class AbstractOrder(object):
-
-    def __init__(self, qty, melon_type, order_type, country_code=None):
-        self.name = name
-
-  
-
-class InternationalMelonOrder(AbstractOrder):
-    
-    def __init__(self, qty, melon_type, country_code):
-        super(InternationalMelonOrder, self).__init__(qty, melon_type, 'international', country_code)
-"""
